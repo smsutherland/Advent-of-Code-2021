@@ -12,3 +12,6 @@ This problem reminded me a lot of the example in the book about using iterators,
 
 ## Day 1.1
 Between days 1 and 2, I decided that enough was enough. I wasn't going to download the inputs manually any longer! Thus began my several hour excursion into the rabbit hole of http requests and writing files in Rust. For making http requests, I was hoping to find some simple API like the requests module in Python, but settled for the only thing I could (eventually) get to work. There was a similar process for creating and writing the file of trying desperately to understand why things aren't working until finally things come together. The whole process was a bit of a headache, but I'm glad I went through it. Even though in the grand scheme of things it's not too much code, I feel like I accomplished something.
+
+## [Day 2](/src/day_2.rs)
+This problem was perfect for the match statement. The actual logic of the problem was very quick thanks to it. Honestly, my only stumbling point today was trying to figure out how to destructure the split string in one line rather than simply doing it on multiple lines (which is what I ended up doing anyway).
