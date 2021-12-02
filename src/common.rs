@@ -15,7 +15,6 @@ where
 }
 
 pub fn download_input(day_num: u8) -> Result<(), Box<dyn Error>> {
-    dotenv::dotenv().unwrap();
     let aoc_session = dotenv::var("AOC_SESSION").unwrap();
 
     let mut header = reqwest::header::HeaderMap::new();
@@ -46,6 +45,7 @@ pub fn download_input(day_num: u8) -> Result<(), Box<dyn Error>> {
         .open(path)?;
     write!(file, "{}", input)?;
 
+    println!("Downloaded input for day {}.", day_num);
     Ok(())
 }
 
