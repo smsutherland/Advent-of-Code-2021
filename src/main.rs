@@ -6,7 +6,7 @@ use std::process;
 const NUM_DAYS: u8 = 25;
 
 fn main() {
-    let day_num: u32;
+    let day_num: u8;
 
     let args: Vec<String> = env::args().collect();
     let argc = args.len();
@@ -39,9 +39,12 @@ fn main() {
 
     let filename = format!("data/input-{}.txt", day_num);
 
-    let lines = common::read_lines(filename).unwrap_or_else(|error| {
-        println!("{:?}", error);
-        process::exit(1);
+    let lines = common::read_lines(&filename).unwrap_or_else(|_| {
+        common::download_input(day_num).unwrap();
+        common::read_lines(&filename).unwrap_or_else(|error| {
+            println!("{:?}", error);
+            process::exit(1);
+        })
     });
     let result: (u32, u32) = match day_num {
         1 => day_1::day_1(&lines),

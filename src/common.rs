@@ -1,5 +1,6 @@
 use std::error::Error;
-use std::fs::File;
+use std::fs::{File, OpenOptions};
+use std::io::prelude::*;
 use std::io::{self, BufRead};
 use std::path::Path;
 
@@ -11,6 +12,41 @@ where
     let line_iterator = io::BufReader::new(file).lines();
 
     Ok(line_iterator.collect::<Result<_, _>>()?)
+}
+
+pub fn download_input(day_num: u8) -> Result<(), Box<dyn Error>> {
+    dotenv::dotenv().unwrap();
+    let aoc_session = dotenv::var("AOC_SESSION").unwrap();
+
+    let mut header = reqwest::header::HeaderMap::new();
+    header.insert(
+        "cookie",
+        reqwest::header::HeaderValue::from_str(format!("session={}", aoc_session).as_str())?,
+    );
+    let client = reqwest::blocking::Client::builder()
+        .default_headers(header)
+        .build()?;
+    let input = client
+        .get(format!(
+            "https://adventofcode.com/2021/day/{}/input",
+            day_num
+        ))
+        .send()?
+        .text()?;
+
+    let path_str = format!("data/input-{}.txt", day_num);
+    let path = Path::new(&path_str);
+    let prefix = path.parent().unwrap();
+    std::fs::create_dir_all(prefix).unwrap();
+
+    let mut file = OpenOptions::new()
+        .create_new(true)
+        .write(true)
+        .append(true)
+        .open(path)?;
+    write!(file, "{}", input)?;
+
+    Ok(())
 }
 
 // Takes a string with {} and a string without and matches parts of the second string to the {} in the first string
