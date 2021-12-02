@@ -1,6 +1,6 @@
 use itertools::izip;
 
-pub fn day_1(lines: &[String]) -> (u32, u32) {
+pub fn run(lines: &[String]) -> (u32, u32) {
     let depths = lines.iter().map(|x| x.parse::<u32>().unwrap());
     let part_1 = depths
         .clone()
