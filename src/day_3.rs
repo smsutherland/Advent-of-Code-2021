@@ -56,9 +56,8 @@ fn most_common_bit(nums: &[u32], place: u8) -> u32 {
         .sum::<i32>()
         .cmp(&0)
     {
-        Ordering::Greater => 1,
+        Ordering::Greater | Ordering::Equal => 1,
         Ordering::Less => 0,
-        Ordering::Equal => 1,
     }
 }
 
