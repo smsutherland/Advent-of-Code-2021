@@ -50,23 +50,15 @@ pub fn run(lines: &[String]) -> (u32, u32) {
 
 fn most_common_bit(nums: &[u32], place: u8) -> u32 {
     assert!(place < 32);
-    let mask: u32 = 1 << place;
-
     match nums
         .iter()
-        .map(|x| (x & mask) >> place)
-        .sum::<u32>()
-        .cmp(&((nums.len() / 2) as u32))
+        .map(|x| (((x >> place) & 1) * 2) as i32 - 1)
+        .sum::<i32>()
+        .cmp(&0)
     {
         Ordering::Greater => 1,
         Ordering::Less => 0,
-        Ordering::Equal => {
-            if nums.len() % 2 == 1 {
-                0
-            } else {
-                1
-            }
-        }
+        Ordering::Equal => 1 - (nums.len() % 2) as u32,
     }
 }
 
