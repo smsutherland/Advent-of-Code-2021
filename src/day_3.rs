@@ -58,7 +58,7 @@ fn most_common_bit(nums: &[u32], place: u8) -> u32 {
     {
         Ordering::Greater => 1,
         Ordering::Less => 0,
-        Ordering::Equal => 1 - (nums.len() % 2) as u32,
+        Ordering::Equal => 1,
     }
 }
 
