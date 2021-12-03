@@ -49,6 +49,7 @@ fn main() {
     let result: (u32, u32) = match day_num {
         1 => day_1::run(&lines),
         2 => day_2::run(&lines),
+        3 => day_3::run(&lines),
         _ => (0, 0),
     };
     println!("part 1: {}\npart 2: {}", result.0, result.1);
