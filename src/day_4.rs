@@ -53,11 +53,11 @@ impl Board {
         }
 
         // check off diag
-        let mut main_diag = Vec::new();
+        let mut off_diag = Vec::new();
         for xy in 0..5 {
-            main_diag.push(self.nums[4 - xy][xy]);
+            off_diag.push(self.nums[4 - xy][xy]);
         }
-        if Self::check_group(&main_diag) {
+        if Self::check_group(&off_diag) {
             return true;
         }
 
