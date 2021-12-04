@@ -33,6 +33,11 @@ pub fn download_input(day_num: u8) -> Result<(), Box<dyn Error>> {
         .send()?
         .text()?;
 
+    if input.starts_with("Please don't repeatedly request this endpoint before it unlocks!"){
+        println!("Input for day {} not ready.", day_num);
+        return Ok(());
+    }
+
     let path_str = format!("data/input-{}.txt", day_num);
     let path = Path::new(&path_str);
     let prefix = path.parent().unwrap();
