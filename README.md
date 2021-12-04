@@ -2,7 +2,7 @@
 Advent of Code 2021 is here and so am I. I've decided to start a pattern of learning a new language for each AoC I participate in. Last year I learned Python; this year I'm learning Rust! At the time of writing (on the first day of AoC21), I have almost finished reading the [Rust Book](https://doc.rust-lang.org/stable/book/). As I go, I will try to document my thoughts on each day's solution, both in terms of the solution itself and it's implementation in Rust.
 
 ### Days
-[Day 0](#day-0) / [Day 1](#day-1) / [Day 1.1](#day-11) / [Day 2](#day-2) / [Day 3](#day-3)
+[Day 0](#day-0) / [Day 1](#day-1) / [Day 1.1](#day-11) / [Day 2](#day-2) / [Day 3](#day-3) / [Day 4](#day-4)
 
 ## Day 0
 Before going into this, I wanted to have at least some working knowledge of how to work in Rust. I was reading through the book, but to gain some more hands-on experience, I redid some of the AoC20 problems. While doing so, I made the infrastructure used to run the solutions. [main.rs](/src/main.rs) was made to select a day to run and pass the input to the relevant function as an array of strings. While doing problem 2 in AoC20, I was faced with string decomposition. I spent considerable time trying to generalize the solution to that problem and came up with [this](/src/common.rs#L18). It's far from a perfect solution. For example, I hoped to find a way to try to parse the strings into the given type, but I couldn't find a way to work that much type wizardry. For now it simply returns a list of strings and type conversions have to be done outside the function.
@@ -24,3 +24,18 @@ My initial solution to part 1 involved breaking the string representation of eac
 Part 1 went fairly easily, but when I saw part 2, I immediately thought I had to take my "most common digit" code and extract it into its own function. Doing this proved more problematic than I had originally expected. I have since cleaned the most common bit function, but the original implementation can be found at [this commit](https://github.com/smsutherland/Advent-of-Code-2021/blob/05b67f4469ab062fddc0204d10623139f941c51c/src/day_3.rs#L51). You can still see the idea of summing the digits and comparing to length/2, but part 2 introduces the case where there is a tie. At first I was returning 2 instead of 0 or 1 with the idea that I would deal with the even cases in the usage code, but further analysis of the problem led me to change that to being able to return 0 or 1 (depending on the parity of the length). It depends on the parity of the length because if the length is odd, the .5 gets lost in the integer division, so the equal case is really a less case in disguise. The current implementation takes a different approach inspired by [Bradon Zhang](https://github.com/BradonZhang/advent-of-code-2021/blob/main/src/3.py#L15) to subtract one for each 0 rather than adding 0, then comparing the total sum to 0 instead of length/2. This achieves the same result, but in my opinion, it is a cleaner way than dealing with the parity of the length. Actually, while writing this I realized the parity of the length could be ignored entirely. Since the only case that depends on the parity was the equal case and that can only occur if there is an even count of numbers, we can assume the parity is even for that case and return a value accordingly. Getting the details of this function right was difficult, which is why 3 of the 5 tests are dedicated to making sure it works. Once I got that snafu worked out, making the actual solution for part 2 wasn't terribly hard.
 
 I think the way things work currently could use a lot of cleaning. I may go back and do that once the advent is over, but I'm happy with it for now. I have to do a lot of type casting that I think typing my variables smarter would alleviate. There were also smaller issues that I had throughout the process. Two notable ones in my memory were dealing with a test that kept failing because I forgot to but "0b" in front of the binary number being defined in the test, and trying to work out a way to parse the string as a binary number rather than a decimal one.
+
+## [Day 4](/src/day_4.rs)
+I think I could've done this one faster than I did, but in a significantly less clean way. Instead, I tried to use the object oriented features of Rust to make the solution cleaner, rather than faster. By using an enum, I avoided having to store two boards: one with numbers and one with booleans, since I could encapsulate whether the square was marked using the enum cases and store the number inside the enum.
+```Rust
+enum Status {
+    Marked(u32),
+    Unmarked(u32),
+}
+
+
+struct Board {
+    nums: Vec<Vec<Status>>,
+}
+```
+Once I was able to abstract most of the important functionality into methods on the Board struct, solving both part 1 and part 2 were pretty simple.
