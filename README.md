@@ -1,8 +1,9 @@
 # Advent of Code 2021
 Advent of Code 2021 is here and so am I. I've decided to start a pattern of learning a new language for each AoC I participate in. Last year I learned Python; this year I'm learning Rust! At the time of writing (on the first day of AoC21), I have almost finished reading the [Rust Book](https://doc.rust-lang.org/stable/book/). As I go, I will try to document my thoughts on each day's solution, both in terms of the solution itself and it's implementation in Rust.
+Note that this is written assuming you are familiar with what the problems are. You can find the 2021 problem set [here](https://adventofcode.com/2021/).
 
 ### Days
-[Day 0](#day-0) / [Day 1](#day-1) / [Day 1.1](#day-11) / [Day 2](#day-2) / [Day 3](#day-3) / [Day 4](#day-4)
+[Day 0](#day-0) / [Day 1](#day-1) / [Day 1.1](#day-11) / [Day 2](#day-2) / [Day 3](#day-3) / [Day 4](#day-4) / [Day 5](#day-5)
 
 ## Day 0
 Before going into this, I wanted to have at least some working knowledge of how to work in Rust. I was reading through the book, but to gain some more hands-on experience, I redid some of the AoC20 problems. While doing so, I made the infrastructure used to run the solutions. [main.rs](/src/main.rs) was made to select a day to run and pass the input to the relevant function as an array of strings. While doing problem 2 in AoC20, I was faced with string decomposition. I spent considerable time trying to generalize the solution to that problem and came up with [this](/src/common.rs#L18). It's far from a perfect solution. For example, I hoped to find a way to try to parse the strings into the given type, but I couldn't find a way to work that much type wizardry. For now it simply returns a list of strings and type conversions have to be done outside the function.
@@ -39,3 +40,6 @@ struct Board {
 }
 ```
 Once I was able to abstract most of the important functionality into methods on the Board struct, solving both part 1 and part 2 were pretty simple.
+
+## [Day 5](/src/day_5.rs)
+I have learned from previous advents that in situations like this where you have a grid of points, rather than creating a 2d array of the entire board and storing it that way, it is better in many situations to create a hashmap who's keys are the coordinate pairs. Not only does this not require you to know the dimensions of your working space from the beginning, but it easily generalizes to higher dimensions in a memory efficient way. I know it feels weird to call a hashmap memory efficient, but since it's only storing the points of interest (as opposed to an array which necessarily stores all points), it's memory efficiency compared to an array gets better as the density of points of interest goes down. And this is on top of the aforementioned benefit of not needing to know the size when creating the hashmap. I specifically like hashmaps in Rust because of features like the `.or_insert` method. The number of times I've written code like `if x not in map: map[x] = 0` pains me. `.or_insert` creates the same behavior, but in a much cleaner way. Then, doing the final count was as easy as creating a filter on the iterator across the hashmap.
