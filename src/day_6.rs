@@ -14,26 +14,28 @@ pub fn run(lines: &[String]) -> (u64, u64) {
         fish[6] += new_fish;
 
         if i == 79 {
-            part_1 = fish.iter().sum::<u64>();
+            part_1 = fish.iter().sum();
         }
 
-        // let mut new_fish = 0;
-        // let mut fish_counter = |fish_age: u64|{
-        //     let mut fish_age = fish_age;
-        //     if fish_age == 0{
-        //         fish_age = 6;
-        //         new_fish += 1;
-        //     }
-        //     else{
-        //         fish_age -= 1;
-        //     }
+        /*
+        let mut new_fish = 0;
+        let mut fish_counter = |fish_age: u64|{
+            let mut fish_age = fish_age;
+            if fish_age == 0{
+                fish_age = 6;
+                new_fish += 1;
+            }
+            else{
+                fish_age -= 1;
+            }
 
-        //     fish_age
-        // };
-        // fish = fish.iter().map(|x| fish_counter(*x)).collect();
-        // for _ in 0..new_fish{
-        //     fish.push(8);
-        // }
+            fish_age
+        };
+        fish = fish.iter().map(|x| fish_counter(*x)).collect();
+        for _ in 0..new_fish{
+            fish.push(8);
+        }
+        */
     }
-    (part_1, fish.iter().sum::<u64>())
+    (part_1, fish.iter().sum())
 }
