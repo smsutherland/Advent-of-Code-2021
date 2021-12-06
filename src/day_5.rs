@@ -1,19 +1,18 @@
 use std::collections::HashMap;
+use crate::common;
 
 pub fn run(lines: &[String]) -> (u64, u64) {
-    let mut board_1: HashMap<(i32, i32), u64> = HashMap::new();
-    let mut board_2: HashMap<(i32, i32), u64> = HashMap::new();
+    let mut board_1: HashMap<(i64, i64), u64> = HashMap::new();
+    let mut board_2: HashMap<(i64, i64), u64> = HashMap::new();
 
     for line in lines {
-        // let bits = common::deformat_str("{},{} -> {},{}}", line).unwrap(); // NOTE: Fix deformat_str
+        let bits = common::deformat_str("{},{} -> {},{}", line).unwrap();
+        let mut bits_iter = bits.iter().map(|x| x.parse::<i64>().unwrap());
 
-        let mut points = line.split(" -> ");
-        let mut point0 = points.next().unwrap().split(",");
-        let mut point1 = points.next().unwrap().split(",");
-        let x0: i32 = point0.next().unwrap().parse().unwrap();
-        let y0: i32 = point0.next().unwrap().parse().unwrap();
-        let x1: i32 = point1.next().unwrap().parse().unwrap();
-        let y1: i32 = point1.next().unwrap().parse().unwrap();
+        let x0 = bits_iter.next().unwrap();
+        let y0 = bits_iter.next().unwrap();
+        let x1 = bits_iter.next().unwrap();
+        let y1 = bits_iter.next().unwrap();
 
         if x0 == x1 {
             if y0 < y1 {

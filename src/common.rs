@@ -175,3 +175,23 @@ fn deformat_str(format_str: &str, actual_str: &str) -> Option<(Vec<String>, Vec<
     return Some((result, type_strs));
 }
 */
+
+#[cfg(test)]
+mod test{
+    use super::*;
+    #[test]
+    fn deformat_str_1() {
+        let format_str = String::from("{},{} -> {},{}");
+        let actual_str = String::from("111,863 -> 111,298");
+        let result = deformat_str(&format_str, &actual_str).unwrap();
+
+        let expected_result = vec![
+            String::from("111"),
+            String::from("863"),
+            String::from("111"),
+            String::from("298"),
+        ];
+
+        assert_eq!(result, expected_result);
+    }
+}
