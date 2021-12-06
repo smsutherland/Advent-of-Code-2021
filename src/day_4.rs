@@ -1,7 +1,7 @@
 #[derive(Clone, Copy)]
 enum Status {
-    Marked(u32),
-    Unmarked(u32),
+    Marked(u64),
+    Unmarked(u64),
 }
 
 struct Board {
@@ -13,7 +13,7 @@ impl Board {
         Board { nums }
     }
 
-    fn mark_num(&mut self, num: u32) -> bool {
+    fn mark_num(&mut self, num: u64) -> bool {
         'breakout: for (y, row) in self.nums.iter().enumerate() {
             for (x, value) in row.iter().enumerate() {
                 if let Status::Unmarked(val) = value {
@@ -83,7 +83,7 @@ impl Board {
         true
     }
 
-    fn score_part(&self) -> u32 {
+    fn score_part(&self) -> u64 {
         let mut result = 0;
         for row in &self.nums {
             for value in row {
@@ -96,8 +96,8 @@ impl Board {
     }
 }
 
-pub fn run(lines: &[String]) -> (u32, u32) {
-    let order: Vec<u32> = lines[0].split(",").map(|x| x.parse().unwrap()).collect();
+pub fn run(lines: &[String]) -> (u64, u64) {
+    let order: Vec<u64> = lines[0].split(",").map(|x| x.parse().unwrap()).collect();
 
     let mut lines = lines.iter().skip(1);
 

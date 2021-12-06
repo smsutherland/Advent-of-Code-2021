@@ -1,13 +1,13 @@
 use itertools::izip;
 
-pub fn run(lines: &[String]) -> (u32, u32) {
-    let depths = lines.iter().map(|x| x.parse::<u32>().unwrap());
+pub fn run(lines: &[String]) -> (u64, u64) {
+    let depths = lines.iter().map(|x| x.parse::<u64>().unwrap());
     let part_1 = depths
         .clone()
         .zip(depths.clone().skip(1))
         .map(|x| x.0 < x.1)
         .filter(|x| *x == true)
-        .count() as u32;
+        .count() as u64;
 
     let sums_of_3 = izip!(
         depths.clone(),
@@ -20,7 +20,7 @@ pub fn run(lines: &[String]) -> (u32, u32) {
         .zip(sums_of_3.clone().skip(1))
         .map(|x| x.0 < x.1)
         .filter(|x| *x == true)
-        .count() as u32;
+        .count() as u64;
 
     (part_1, part_2)
 }

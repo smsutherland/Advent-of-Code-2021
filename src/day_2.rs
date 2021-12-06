@@ -1,4 +1,4 @@
-pub fn run(lines: &[String]) -> (u32, u32) {
+pub fn run(lines: &[String]) -> (u64, u64) {
     let mut x = 0;
     let mut d = 0;
 
@@ -7,7 +7,7 @@ pub fn run(lines: &[String]) -> (u32, u32) {
     for line in lines {
         let mut line_split = line.split(" ");
         let com = line_split.next().unwrap();
-        let val: u32 = line_split.next().unwrap().parse().unwrap();
+        let val: u64 = line_split.next().unwrap().parse().unwrap();
 
         match com {
             "forward" => {

@@ -46,12 +46,13 @@ fn main() {
             process::exit(1);
         })
     });
-    let result: (u32, u32) = match day_num {
+    let result: (u64, u64) = match day_num {
         1 => day_1::run(&lines),
         2 => day_2::run(&lines),
         3 => day_3::run(&lines),
         4 => day_4::run(&lines),
         5 => day_5::run(&lines),
+        6 => day_6::run(&lines),
         _ => (0, 0),
     };
     println!("part 1: {}\npart 2: {}", result.0, result.1);

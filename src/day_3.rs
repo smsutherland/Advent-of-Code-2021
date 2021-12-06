@@ -1,12 +1,12 @@
 use std::cmp::Ordering;
 
-pub fn run(lines: &[String]) -> (u32, u32) {
+pub fn run(lines: &[String]) -> (u64, u64) {
     let num_length = lines[0].len();
 
-    let nums: Vec<u32> = lines
+    let nums: Vec<u64> = lines
         .clone()
         .iter()
-        .map(|x| u32::from_str_radix(x, 2).unwrap())
+        .map(|x| u64::from_str_radix(x, 2).unwrap())
         .collect();
 
     let mut gamma = 0;
@@ -48,7 +48,7 @@ pub fn run(lines: &[String]) -> (u32, u32) {
     (gamma * epsilon, oxygen * carbon)
 }
 
-fn most_common_bit(nums: &[u32], place: u8) -> u32 {
+fn most_common_bit(nums: &[u64], place: u8) -> u64 {
     assert!(place < 32);
     match nums
         .iter()
@@ -134,7 +134,7 @@ mod test {
     #[test]
     fn binary_parse() {
         let binary_str = String::from("1100");
-        let binary_int: u32 = u32::from_str_radix(&binary_str, 2).unwrap();
+        let binary_int: u64 = u64::from_str_radix(&binary_str, 2).unwrap();
 
         assert_eq!(binary_int, 12);
     }

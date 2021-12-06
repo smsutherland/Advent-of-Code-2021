@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
-pub fn run(lines: &[String]) -> (u32, u32) {
-    let mut board_1: HashMap<(i32, i32), u32> = HashMap::new();
-    let mut board_2: HashMap<(i32, i32), u32> = HashMap::new();
+pub fn run(lines: &[String]) -> (u64, u64) {
+    let mut board_1: HashMap<(i32, i32), u64> = HashMap::new();
+    let mut board_2: HashMap<(i32, i32), u64> = HashMap::new();
 
     for line in lines {
         // let bits = common::deformat_str("{},{} -> {},{}}", line).unwrap(); // NOTE: Fix deformat_str
@@ -65,8 +65,8 @@ pub fn run(lines: &[String]) -> (u32, u32) {
         }
     }
 
-    let part_1 = board_1.iter().filter(|x| *x.1 > 1).count() as u32;
-    let part_2 = board_2.iter().filter(|x| *x.1 > 1).count() as u32;
+    let part_1 = board_1.iter().filter(|x| *x.1 > 1).count() as u64;
+    let part_2 = board_2.iter().filter(|x| *x.1 > 1).count() as u64;
 
     (part_1, part_2)
 }

@@ -30,8 +30,8 @@ I think the way things work currently could use a lot of cleaning. I may go back
 I think I could've done this one faster than I did, but in a significantly less clean way. Instead, I tried to use the object oriented features of Rust to make the solution cleaner, rather than faster. By using an enum, I avoided having to store two boards: one with numbers and one with booleans, since I could encapsulate whether the square was marked using the enum cases and store the number inside the enum.
 ```Rust
 enum Status {
-    Marked(u32),
-    Unmarked(u32),
+    Marked(u64),
+    Unmarked(u64),
 }
 
 
