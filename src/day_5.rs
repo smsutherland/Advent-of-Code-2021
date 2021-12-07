@@ -1,5 +1,5 @@
-use std::collections::HashMap;
 use crate::common;
+use std::collections::HashMap;
 
 pub fn run(lines: &[String]) -> (u64, u64) {
     let mut board_1: HashMap<(i64, i64), u64> = HashMap::new();

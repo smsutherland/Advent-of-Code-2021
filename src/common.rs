@@ -177,7 +177,7 @@ fn deformat_str(format_str: &str, actual_str: &str) -> Option<(Vec<String>, Vec<
 */
 
 #[cfg(test)]
-mod test{
+mod test {
     use super::*;
     #[test]
     fn deformat_str_1() {
