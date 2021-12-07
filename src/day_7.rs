@@ -3,7 +3,7 @@ pub fn run(lines: &[String]) -> (u64, u64) {
 
     let mut min_fuel = 1000000000000_u64;
     for i in 0..=(*nums.iter().max().unwrap()) {
-        let fuel = nums.iter().map(|x| (i - x).abs()).sum::<i64>();
+        let fuel: i64 = nums.iter().map(|x| (i - x).abs()).sum();
         if fuel < min_fuel as i64 {
             min_fuel = fuel as u64;
         }
@@ -11,10 +11,10 @@ pub fn run(lines: &[String]) -> (u64, u64) {
 
     let mut min_fuel2 = 1000000000000_u64;
     for i in 0..=(*nums.iter().max().unwrap()) {
-        let fuel = nums
+        let fuel: i64 = nums
             .iter()
             .map(|x| (i - x).abs() * ((i - x).abs() + 1) / 2)
-            .sum::<i64>();
+            .sum();
         if fuel < min_fuel2 as i64 {
             min_fuel2 = fuel as u64;
         }
