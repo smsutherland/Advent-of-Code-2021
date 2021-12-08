@@ -9,75 +9,16 @@ use std::collections::{HashMap, HashSet};
 //  ggg
 
 pub fn run(lines: &[String]) -> (u64, u64) {
-    let mut zero = HashSet::new();
-    zero.insert('a');
-    zero.insert('b');
-    zero.insert('c');
-    zero.insert('e');
-    zero.insert('f');
-    zero.insert('g');
-
-    let mut one = HashSet::new();
-    one.insert('c');
-    one.insert('f');
-
-    let mut two = HashSet::new();
-    two.insert('a');
-    two.insert('c');
-    two.insert('d');
-    two.insert('e');
-    two.insert('g');
-
-    let mut three = HashSet::new();
-    three.insert('a');
-    three.insert('c');
-    three.insert('d');
-    three.insert('f');
-    three.insert('g');
-
-    let mut four = HashSet::new();
-    four.insert('b');
-    four.insert('c');
-    four.insert('d');
-    four.insert('f');
-
-    let mut five = HashSet::new();
-    five.insert('a');
-    five.insert('b');
-    five.insert('d');
-    five.insert('f');
-    five.insert('g');
-
-    let mut six = HashSet::new();
-    six.insert('a');
-    six.insert('b');
-    six.insert('d');
-    six.insert('e');
-    six.insert('f');
-    six.insert('g');
-
-    let mut seven = HashSet::new();
-    seven.insert('a');
-    seven.insert('c');
-    seven.insert('f');
-
-    let mut eight = HashSet::new();
-    eight.insert('a');
-    eight.insert('b');
-    eight.insert('c');
-    eight.insert('d');
-    eight.insert('e');
-    eight.insert('f');
-    eight.insert('g');
-
-    let mut nine = HashSet::new();
-    nine.insert('a');
-    nine.insert('b');
-    nine.insert('c');
-    nine.insert('d');
-    nine.insert('f');
-    nine.insert('g');
-
+    let zero:  HashSet<_> = vec!['a', 'b', 'c', 'e', 'f', 'g'].drain(..).collect();
+    let one:   HashSet<_> = vec!['c', 'f'].drain(..).collect();
+    let two:   HashSet<_> = vec!['a', 'c', 'd', 'e', 'g'].drain(..).collect();
+    let three: HashSet<_> = vec!['a', 'c', 'd', 'f', 'g'].drain(..).collect();
+    let four:  HashSet<_> = vec!['b', 'c', 'd', 'f'].drain(..).collect();
+    let five:  HashSet<_> = vec!['a', 'b', 'd', 'f', 'g'].drain(..).collect();
+    let six:   HashSet<_> = vec!['a', 'b', 'd', 'e', 'f', 'g'].drain(..).collect();
+    let seven: HashSet<_> = vec!['a', 'c', 'f'].drain(..).collect();
+    let eight: HashSet<_> = vec!['a', 'b', 'c', 'd', 'e', 'f', 'g'].drain(..).collect();
+    let nine:  HashSet<_> = vec!['a', 'b', 'c', 'd', 'f', 'g'].drain(..).collect();
     let digits = vec![zero, one, two, three, four, five, six, seven, eight, nine];
 
     let mut part_1 = 0;
