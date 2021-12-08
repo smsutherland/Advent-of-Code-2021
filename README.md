@@ -3,7 +3,7 @@ Advent of Code 2021 is here and so am I. I've decided to start a pattern of lear
 Note that this is written assuming you are familiar with what the problems are. You can find the 2021 problem set [here](https://adventofcode.com/2021/).
 
 ### Days
-[Day 0](#day-0) / [Day 1](#day-1) / [Day 1.1](#day-11) / [Day 2](#day-2) / [Day 3](#day-3) / [Day 4](#day-4) / [Day 5](#day-5) / [Day 6](#day-6) / [Day 7](#day-7)
+[Day 0](#day-0) / [Day 1](#day-1) / [Day 1.1](#day-11) / [Day 2](#day-2) / [Day 3](#day-3) / [Day 4](#day-4) / [Day 5](#day-5) / [Day 6](#day-6) / [Day 7](#day-7) / [Day 8](#day-8)
 
 ## Day 0
 Before going into this, I wanted to have at least some working knowledge of how to work in Rust. I was reading through the book, but to gain some more hands-on experience, I redid some of the AoC20 problems. While doing so, I made the infrastructure used to run the solutions. [main.rs](/src/main.rs) was made to select a day to run and pass the input to the relevant function as an array of strings. While doing problem 2 in AoC20, I was faced with string decomposition. I spent considerable time trying to generalize the solution to that problem and came up with [this](/src/common.rs#L18). It's far from a perfect solution. For example, I hoped to find a way to try to parse the strings into the given type, but I couldn't find a way to work that much type wizardry. For now it simply returns a list of strings and type conversions have to be done outside the function.
@@ -49,3 +49,18 @@ As I assume many people did on today's puzzle, I did part 1 in way which is very
 
 ## [Day 7](/src/day_7.rs)
 I did pretty good on today's problem: top 700 for part 2. This was because of how similar parts 1 and 2 were, so solving part 2 mainly entailed copy-pasting my solution to part 1 and changing `(i - x).abs()` to `(i - x).abs() * ((i - x).abs() + 1) / 2`. When I initially did the problem, I looped through the range 0 through max and kept track of the minimum fuel level, but I later went back and converted the loop to an iterator operation on the given range. Because of the simplicity of the problem, the super-iterator solution can be done in a single expression, so the answers are calculated in the return value; the first line of the function is a solution which truly does the whole problem in a single line. This is just a flattening of the prettified solution below it, but it does mean that everywhere that uses the nums variable in the pretty solution has to go and parse the input again. In total, this one-line solution is ~500 characters long. Overall, an easy problem. I am growing ever fonder of iterators in Rust with every problem that can be solved by leveraging them.
+
+## [Day 8](/src/day_8.rs)
+Part 1 was pretty easy, so I will spent my time here discussing part 2. One key thing to note was that the solving path is the same regardless of what the input is. The process goes something like this:
+1. We know which of the input is 1, 7, 4, and 8 because they have a unique number of segments activated.
+2. Top = 7 - 1 (note that the arithmetic is done on the sets of segments making up each digit, not the literal numbers).
+3. 4 + 7 = 9 - Bot
+   - For this, there are two unknowns, Bot and 9. However, 9 is the only number which has one extra segment beyond 4 + 7. Therefore, by finding which number for whom |x - 4 - 7| = 1, x must be 9 and the one element must be Bot. This operation is performed in the `find_one_more` function.
+4. BotL = 8 - 9
+5. 7 + Bot + BotL = 0 - TopL
+6. 4 - 1 - TopL = Mid
+7. Top + Mid + Bot + BotL = 2 - TopR
+8. BotR = 8 - AllOtherSides
+
+Once we know which letter corresponds with which side, we invert the key to get the reverse key and decrypt the numbers given.
+There are certainly other solving paths that work just as well, but I don't think it can get any shorter, since each step beyond the first one involves finding one of the seven sides and I don't think it's possible to find multiple sides in a single step.
