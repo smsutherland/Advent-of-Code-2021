@@ -6,7 +6,7 @@ use std::collections::{HashMap, HashSet};
 //  dddd
 // e    f
 // e    f
-//  ggg
+//  gggg
 
 pub fn run(lines: &[String]) -> (u64, u64) {
     let zero:  HashSet<_> = vec!['a', 'b', 'c', 'e', 'f', 'g'].drain(..).collect();
