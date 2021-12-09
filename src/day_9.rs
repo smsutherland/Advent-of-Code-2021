@@ -45,7 +45,7 @@ fn generate_random_color() -> Color {
 }
 
 impl Display for BasinMap {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut color_map = HashMap::new();
         color_map.insert(0, Color::White);
         for row in self.iter() {
