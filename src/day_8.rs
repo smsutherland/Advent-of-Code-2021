@@ -9,16 +9,16 @@ use std::collections::{HashMap, HashSet};
 //  gggg
 
 pub fn run(lines: &[String]) -> (u64, u64) {
-    let zero:  HashSet<_> = vec!['a', 'b', 'c', 'e', 'f', 'g'].drain(..).collect();
-    let one:   HashSet<_> = vec!['c', 'f'].drain(..).collect();
-    let two:   HashSet<_> = vec!['a', 'c', 'd', 'e', 'g'].drain(..).collect();
+    let zero: HashSet<_> = vec!['a', 'b', 'c', 'e', 'f', 'g'].drain(..).collect();
+    let one: HashSet<_> = vec!['c', 'f'].drain(..).collect();
+    let two: HashSet<_> = vec!['a', 'c', 'd', 'e', 'g'].drain(..).collect();
     let three: HashSet<_> = vec!['a', 'c', 'd', 'f', 'g'].drain(..).collect();
-    let four:  HashSet<_> = vec!['b', 'c', 'd', 'f'].drain(..).collect();
-    let five:  HashSet<_> = vec!['a', 'b', 'd', 'f', 'g'].drain(..).collect();
-    let six:   HashSet<_> = vec!['a', 'b', 'd', 'e', 'f', 'g'].drain(..).collect();
+    let four: HashSet<_> = vec!['b', 'c', 'd', 'f'].drain(..).collect();
+    let five: HashSet<_> = vec!['a', 'b', 'd', 'f', 'g'].drain(..).collect();
+    let six: HashSet<_> = vec!['a', 'b', 'd', 'e', 'f', 'g'].drain(..).collect();
     let seven: HashSet<_> = vec!['a', 'c', 'f'].drain(..).collect();
     let eight: HashSet<_> = vec!['a', 'b', 'c', 'd', 'e', 'f', 'g'].drain(..).collect();
-    let nine:  HashSet<_> = vec!['a', 'b', 'c', 'd', 'f', 'g'].drain(..).collect();
+    let nine: HashSet<_> = vec!['a', 'b', 'c', 'd', 'f', 'g'].drain(..).collect();
     let digits = vec![zero, one, two, three, four, five, six, seven, eight, nine];
 
     let mut part_1 = 0;
@@ -123,10 +123,10 @@ pub fn run(lines: &[String]) -> (u64, u64) {
         letter_map.insert('f', *bot_r.iter().next().unwrap());
 
         let mut inverted_letter_map = HashMap::new();
-        for (key, val) in letter_map.iter(){
+        for (key, val) in letter_map.iter() {
             inverted_letter_map.insert(*val, *key);
         }
-        
+
         let mut unknown_num = 0;
         for digit in output {
             unknown_num *= 10;
@@ -183,11 +183,12 @@ mod test {
     }
 
     #[test]
-    fn test_1(){
-        let input = vec![String::from("acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf")];
+    fn test_1() {
+        let input = vec![String::from(
+            "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf",
+        )];
         let result = run(&input);
 
         assert_eq!(result, (0, 5353));
-
     }
 }
