@@ -1,5 +1,8 @@
-use std::fmt::Debug;
+use std::fmt::{self, Debug, Display};
+use colored::*;
 use std::ops::{Deref, DerefMut};
+use std::collections::HashMap;
+use rand::Rng;
 
 #[derive(Debug)]
 struct BasinMap {
@@ -27,6 +30,32 @@ impl Deref for BasinMap {
 impl DerefMut for BasinMap {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.map
+    }
+}
+
+fn generate_random_color() -> Color{
+    loop{
+        let r = rand::thread_rng().gen_range(0..=255);
+        let g = rand::thread_rng().gen_range(0..=255);
+        let b = rand::thread_rng().gen_range(0..=255);
+        if r as u32 + b as u32 + g as u32 > 256{
+            return Color::TrueColor{r, g, b}
+        }
+    }
+}
+
+impl Display for BasinMap{
+    
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error>{
+        let mut color_map = HashMap::new();
+        color_map.insert(0, Color::White);
+        for row in self.iter(){
+            for val in row{ 
+                write!(f, "{}", format!("{}", val.0).color(*color_map.entry(val.1).or_insert(generate_random_color())))?;
+            }
+            writeln!(f)?;
+        }
+        Ok(())
     }
 }
 
@@ -108,6 +137,8 @@ pub fn run(lines: &[String]) -> (u64, u64) {
             }
         }
     }
+
+    println!("{}", basin_map);
 
     basin_sizes.sort_unstable();
     let mut biggest_basins = basin_sizes.iter().rev();
