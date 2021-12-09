@@ -1,8 +1,8 @@
-use std::fmt::{self, Debug, Display};
 use colored::*;
-use std::ops::{Deref, DerefMut};
-use std::collections::HashMap;
 use rand::Rng;
+use std::collections::HashMap;
+use std::fmt::{self, Debug, Display};
+use std::ops::{Deref, DerefMut};
 
 #[derive(Debug)]
 struct BasinMap {
@@ -33,25 +33,29 @@ impl DerefMut for BasinMap {
     }
 }
 
-fn generate_random_color() -> Color{
-    loop{
+fn generate_random_color() -> Color {
+    loop {
         let r = rand::thread_rng().gen_range(0..=255);
         let g = rand::thread_rng().gen_range(0..=255);
         let b = rand::thread_rng().gen_range(0..=255);
-        if r as u32 + b as u32 + g as u32 > 256{
-            return Color::TrueColor{r, g, b}
+        if r as u32 + b as u32 + g as u32 > 256 {
+            return Color::TrueColor { r, g, b };
         }
     }
 }
 
-impl Display for BasinMap{
-    
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error>{
+impl Display for BasinMap {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
         let mut color_map = HashMap::new();
         color_map.insert(0, Color::White);
-        for row in self.iter(){
-            for val in row{ 
-                write!(f, "{}", format!("{}", val.0).color(*color_map.entry(val.1).or_insert(generate_random_color())))?;
+        for row in self.iter() {
+            for val in row {
+                write!(
+                    f,
+                    "{}",
+                    format!("{}", val.0)
+                        .color(*color_map.entry(val.1).or_insert(generate_random_color()))
+                )?;
             }
             writeln!(f)?;
         }
@@ -84,7 +88,7 @@ pub fn run(lines: &[String]) -> (u64, u64) {
             let mut is_well = true;
             for a in adj {
                 if let Some(adj_val) = basin_map.get(a) {
-                    if val > *adj_val {
+                    if val.0 >= adj_val.0 {
                         is_well = false;
                     }
                 }
@@ -153,10 +157,10 @@ pub fn run(lines: &[String]) -> (u64, u64) {
 fn generate_adj(point: (usize, usize)) -> Vec<(usize, usize)> {
     let mut result = Vec::new();
 
-    for i in -1_isize..=1 {
+    for i in (-1_isize..=1).step_by(2) {
         result.push(((point.0 as isize + i) as usize, point.1));
     }
-    for j in -1_isize..=1 {
+    for j in (-1_isize..=1).step_by(2) {
         result.push((point.0, (point.1 as isize + j) as usize));
     }
     result
