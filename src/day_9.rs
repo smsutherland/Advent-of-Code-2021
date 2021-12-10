@@ -63,7 +63,7 @@ impl Display for BasinMap {
     }
 }
 
-pub fn run(lines: &[String]) -> (u64, u64) {
+pub fn run(lines: &[String], visualize: bool) -> (u64, u64) {
     let mut part_1 = 0;
 
     let mut basin_map = BasinMap {
@@ -142,7 +142,9 @@ pub fn run(lines: &[String]) -> (u64, u64) {
         }
     }
 
-    println!("{}", basin_map);
+    if visualize {
+        println!("{}", basin_map);
+    }
 
     basin_sizes.sort_unstable();
     let mut biggest_basins = basin_sizes.iter().rev();
@@ -178,7 +180,7 @@ mod test {
             String::from("8767896789"),
             String::from("9899965678"),
         ];
-        let result = run(&input);
+        let result = run(&input, true);
 
         assert_eq!(result, (15, 1134));
     }

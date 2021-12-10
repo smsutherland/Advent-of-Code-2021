@@ -35,7 +35,7 @@ fn main() {
         };
     }
 
-    let day_num = day_num;
+    let visualize = args.contains(&String::from("--visualize")) || args.contains(&String::from("-v"));
 
     let filename = format!("data/input-{}.txt", day_num);
 
@@ -55,7 +55,7 @@ fn main() {
         6 => day_6::run(&lines),
         7 => day_7::run(&lines),
         8 => day_8::run(&lines),
-        9 => day_9::run(&lines),
+        9 => day_9::run(&lines, visualize),
         _ => (0, 0),
     };
     println!("part 1: {}\npart 2: {}", result.0, result.1);
