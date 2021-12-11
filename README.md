@@ -3,7 +3,7 @@ Advent of Code 2021 is here and so am I. I've decided to start a pattern of lear
 Note that this is written assuming you are familiar with what the problems are. You can find the 2021 problem set [here](https://adventofcode.com/2021/).
 
 ### Days
-[Day 0](#day-0) / [Day 1](#day-1) / [Day 1.1](#day-11) / [Day 2](#day-2) / [Day 3](#day-3) / [Day 4](#day-4) / [Day 5](#day-5) / [Day 6](#day-6) / [Day 7](#day-7) / [Day 8](#day-8) / [Day 9](#day-9) / [Day 10](#day-10) / [Day 11](#day-11)
+[Day 0](#day-0) / [Day 1](#day-1) / [Day 1.1](#day-11) / [Day 2](#day-2) / [Day 3](#day-3) / [Day 4](#day-4) / [Day 5](#day-5) / [Day 6](#day-6) / [Day 7](#day-7) / [Day 8](#day-8) / [Day 9](#day-9) / [Day 10](#day-10) / [Day 11](#day-11-1)
 
 ## Day 0
 Before going into this, I wanted to have at least some working knowledge of how to work in Rust. I was reading through the book, but to gain some more hands-on experience, I redid some of the AoC20 problems. While doing so, I made the infrastructure used to run the solutions. [main.rs](/src/main.rs) was made to select a day to run and pass the input to the relevant function as an array of strings. While doing problem 2 in AoC20, I was faced with string decomposition. I spent considerable time trying to generalize the solution to that problem and came up with [this](/src/common.rs#L18). It's far from a perfect solution. For example, I hoped to find a way to try to parse the strings into the given type, but I couldn't find a way to work that much type wizardry. For now it simply returns a list of strings and type conversions have to be done outside the function.
