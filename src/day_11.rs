@@ -7,10 +7,6 @@ struct OctoMap {
 }
 
 impl OctoMap {
-    fn _get(&self, point: (usize, usize)) -> Option<&u8> {
-        self.map.get(point.0)?.get(point.1)
-    }
-
     fn get_mut(&mut self, point: (usize, usize)) -> Option<&mut u8> {
         self.map.get_mut(point.0)?.get_mut(point.1)
     }
