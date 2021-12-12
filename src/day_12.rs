@@ -72,7 +72,7 @@ fn num_paths_1(
         .filter(|x| !visited.contains(x));
     let mut paths = 0;
     for next in adj {
-        paths += num_paths_1(cave_paths, visited.clone(), next, end, &bigs);
+        paths += num_paths_1(&cave_paths, visited.clone(), next, end, &bigs);
     }
     paths
 }
@@ -97,7 +97,7 @@ fn num_paths_2(
     let mut paths = 0;
     for next in adj {
         paths += num_paths_2(
-            cave_paths,
+            &cave_paths,
             visited.clone(),
             next,
             end,
