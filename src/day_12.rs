@@ -65,16 +65,14 @@ fn num_paths_1(
     if start == end {
         return 1;
     }
-    let adj: Vec<usize> = get_adj(&cave_paths, start)
-        .drain(..)
-        .filter(|x| !visited.contains(x))
-        .collect();
-    let mut paths = 0;
     if !bigs.contains(&start) {
         visited.push(start);
     }
-    for i in adj {
-        paths += num_paths_1(cave_paths, visited.clone(), i, end, &bigs);
+    let adj = get_adj(&cave_paths, start)
+        .filter(|x| !visited.contains(x));
+    let mut paths = 0;
+    for next in adj {
+        paths += num_paths_1(cave_paths, visited.clone(), next, end, &bigs);
     }
     paths
 }
@@ -91,34 +89,31 @@ fn num_paths_2(
     if start == end {
         return 1;
     }
-    let adj: Vec<usize> = get_adj(&cave_paths, start)
-        .drain(..)
-        .filter(|x| (!visited_small || !visited.contains(x)) && *x != absolute_start)
-        .collect();
-    let mut paths = 0;
     if !bigs.contains(&start) {
         visited.push(start);
     }
-    for i in adj {
+    let adj = get_adj(&cave_paths, start)
+        .filter(|x| (!visited_small || !visited.contains(x)) && *x != absolute_start);
+    let mut paths = 0;
+    for next in adj {
         paths += num_paths_2(
             cave_paths,
             visited.clone(),
-            i,
+            next,
             end,
             &bigs,
-            visited_small || visited.contains(&i),
+            visited_small || visited.contains(&next),
             absolute_start,
         );
     }
     paths
 }
 
-fn get_adj(cave_paths: &Vec<(usize, usize)>, cave_index: usize) -> Vec<usize> {
+fn get_adj<'a>(cave_paths: &'a Vec<(usize, usize)>, cave_index: usize) -> impl Iterator<Item=usize> + 'a {
     cave_paths
         .iter()
-        .filter(|x| x.0 == cave_index || x.1 == cave_index)
-        .map(|x| if x.0 == cave_index { x.1 } else { x.0 })
-        .collect()
+        .filter(move |x| x.0 == cave_index || x.1 == cave_index)
+        .map(move |x| if x.0 == cave_index { x.1 } else { x.0 })
 }
 
 #[cfg(test)]
