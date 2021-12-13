@@ -60,6 +60,7 @@ fn main() {
         10 => day_10::run(&lines),
         11 => day_11::run(&lines),
         12 => day_12::run(&lines),
+        13 => day_13::run(&lines),
         _ => (0, 0),
     };
     println!("part 1: {}\npart 2: {}", result.0, result.1);
