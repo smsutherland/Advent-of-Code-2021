@@ -76,7 +76,7 @@ fn display(points: HashSet<[u64; 2]>) {
             if points.contains(&[x, y]) {
                 print!("#");
             } else {
-                print!(".");
+                print!(" ");
             }
         }
         println!();
