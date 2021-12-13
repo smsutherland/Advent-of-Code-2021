@@ -68,8 +68,7 @@ fn num_paths_1(
     if !bigs.contains(&start) {
         visited.push(start);
     }
-    let adj = get_adj(&cave_paths, start)
-        .filter(|x| !visited.contains(x));
+    let adj = get_adj(&cave_paths, start).filter(|x| !visited.contains(x));
     let mut paths = 0;
     for next in adj {
         paths += num_paths_1(&cave_paths, visited.clone(), next, end, &bigs);
@@ -109,7 +108,10 @@ fn num_paths_2(
     paths
 }
 
-fn get_adj<'a>(cave_paths: &'a Vec<(usize, usize)>, cave_index: usize) -> impl Iterator<Item=usize> + 'a {
+fn get_adj<'a>(
+    cave_paths: &'a Vec<(usize, usize)>,
+    cave_index: usize,
+) -> impl Iterator<Item = usize> + 'a {
     cave_paths
         .iter()
         .filter(move |x| x.0 == cave_index || x.1 == cave_index)
