@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 use std::fmt::Debug;
 use std::ops::Deref;
 
@@ -54,7 +54,7 @@ struct RiskCalculator {
     risk_map: RiskMap,
     cache: HashMap<(usize, usize), u64>,
     size: (usize, usize),
-    stack: Vec<(usize, usize)>, // only used for part 2
+    queue: VecDeque<(usize, usize)>, // only used for part 2
 }
 
 impl RiskCalculator {
@@ -63,7 +63,7 @@ impl RiskCalculator {
             size: (risk_map.len(), risk_map[0].len()),
             risk_map,
             cache: HashMap::new(),
-            stack: Vec::new(),
+            queue: VecDeque::new(),
         }
     }
 
@@ -79,11 +79,10 @@ impl RiskCalculator {
 
     fn min_risk_2(&mut self) -> u64 {
         self.reset_cache();
-        self.stack.push((5 * self.size.0 - 1, 5 * self.size.1 - 1));
-        while let Some(p) = self.stack.pop(){
+        self.queue.push_back((5 * self.size.0 - 1, 5 * self.size.1 - 1));
+        while let Some(p) = self.queue.pop_front(){
             self.min_risk_maker_2(p);
         }
-        println!("{:?}", self.cache.get(&(49, 49)));
         *self.cache.get(&(0, 0)).unwrap() - self.risk_map.get((0, 0)).unwrap() as u64
     }
 
@@ -137,8 +136,6 @@ impl RiskCalculator {
     }
 
     fn min_risk_maker_2(&mut self, start: (usize, usize)) -> u64 {
-        // print_cache(&self.cache, (5*self.size.0, 5*self.size.1));
-
         let mut valid_adj = vec![];
         if start.1 > 0 {
             valid_adj.push((start.0, start.1 - 1));
@@ -163,20 +160,22 @@ impl RiskCalculator {
         let this_point = self.risk_map.get(start).unwrap();
         let result = paths.into_iter().min().unwrap_or(0) + this_point as u64;
 
-
-
         let prev_val = *self.cache.get(&start).unwrap_or(&u64::MAX);
-        self.cache.insert(start, result.min(prev_val)).unwrap_or(u64::MAX);
+        self.cache.insert(start, result.min(prev_val));
 
         if prev_val > result {
             for v in &valid_adj {
-                self.stack.push(*v);
+                if prev_val == u64::MAX{
+                    self.queue.push_front(*v);
+                }
+                else{
+                    self.queue.push_back(*v);
+                }
             }
         }
         result
     }
 }
-// 2196 2948 2954
 
 #[cfg(test)]
 mod test {
