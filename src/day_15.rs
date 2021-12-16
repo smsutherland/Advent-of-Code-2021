@@ -79,8 +79,9 @@ impl RiskCalculator {
 
     fn min_risk_2(&mut self) -> u64 {
         self.reset_cache();
-        self.queue.push_back((5 * self.size.0 - 1, 5 * self.size.1 - 1));
-        while let Some(p) = self.queue.pop_front(){
+        self.queue
+            .push_back((5 * self.size.0 - 1, 5 * self.size.1 - 1));
+        while let Some(p) = self.queue.pop_front() {
             self.min_risk_maker_2(p);
         }
         *self.cache.get(&(0, 0)).unwrap() - self.risk_map.get((0, 0)).unwrap() as u64
@@ -156,7 +157,7 @@ impl RiskCalculator {
                 paths.push(*val);
             }
         }
-        
+
         let this_point = self.risk_map.get(start).unwrap();
         let result = paths.into_iter().min().unwrap_or(0) + this_point as u64;
 
@@ -164,13 +165,12 @@ impl RiskCalculator {
         self.cache.insert(start, result.min(prev_val));
 
         if prev_val > result {
-            if prev_val == u64::MAX{
-                for v in &valid_adj{
+            if prev_val == u64::MAX {
+                for v in &valid_adj {
                     self.queue.push_front(*v);
                 }
-            }
-            else{
-                for v in &valid_adj{
+            } else {
+                for v in &valid_adj {
                     self.queue.push_back(*v);
                 }
             }
