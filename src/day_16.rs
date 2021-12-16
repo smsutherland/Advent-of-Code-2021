@@ -8,78 +8,63 @@ impl Packet {
         let version = u8::from_str_radix(&packet[0..3], 2).unwrap();
         let type_id = u8::from_str_radix(&packet[3..6], 2).unwrap();
 
-        match type_id {
-            4 => {
-                // literal value
-                let mut value: u64 = 0;
-                let mut i = 6;
-                loop {
-                    let bits = &packet[i..i + 5];
-                    let bits_num = u64::from_str_radix(&bits[1..5], 2).unwrap();
-                    value *= 0b10000;
-                    value += bits_num;
-                    i += 5;
-                    if &bits[0..1] == "0" {
-                        break;
-                    }
+        if type_id == 4 {
+            // literal value
+            let mut value: u64 = 0;
+            let mut i = 6;
+            loop {
+                let bits = &packet[i..i + 5];
+                let bits_num = u64::from_str_radix(&bits[1..5], 2).unwrap();
+                value *= 0b10000;
+                value += bits_num;
+                i += 5;
+                if &bits[0..1] == "0" {
+                    break;
+                }
+            }
+            (
+                Self {
+                    version,
+                    typ: PacketType::Literal(value),
+                },
+                i,
+            )
+        } else {
+            let length_type_id = &packet[6..7];
+            if length_type_id == "0" {
+                let sub_packets_len = usize::from_str_radix(&packet[7..7 + 15], 2).unwrap();
+
+                let mut sub_packets = vec![];
+                let mut size = 0;
+                while size < sub_packets_len {
+                    let (op, add_size) = Self::parse_packet(&packet[7 + 15 + size..]);
+                    size += add_size;
+                    sub_packets.push(op);
                 }
                 (
                     Self {
                         version,
-                        typ: PacketType::Literal(value),
+                        typ: PacketType::Operation(Operation::from_type_id(type_id), sub_packets),
                     },
-                    i,
+                    sub_packets_len + 7 + 15,
                 )
-            }
-            _ => {
-                let length_type_id = &packet[6..7];
-                match length_type_id {
-                    "0" => {
-                        let sub_packets_len = usize::from_str_radix(&packet[7..7 + 15], 2).unwrap();
+            } else {
+                let num_sub_packets = usize::from_str_radix(&packet[7..7 + 11], 2).unwrap();
 
-                        let mut sub_packets = vec![];
-                        let mut size = 0;
-                        while size < sub_packets_len {
-                            let (op, add_size) = Self::parse_packet(&packet[7 + 15 + size..]);
-                            size += add_size;
-                            sub_packets.push(op);
-                        }
-                        (
-                            Self {
-                                version,
-                                typ: PacketType::Operation(
-                                    Operation::from_type_id(type_id),
-                                    sub_packets,
-                                ),
-                            },
-                            sub_packets_len + 7 + 15,
-                        )
-                    }
-                    "1" => {
-                        let num_sub_packets = usize::from_str_radix(&packet[7..7 + 11], 2).unwrap();
-
-                        let mut sub_packets = vec![];
-                        let mut size = 0;
-                        for _ in 0..num_sub_packets {
-                            let (op, add_size) = Self::parse_packet(&packet[7 + 11 + size..]);
-                            size += add_size;
-                            sub_packets.push(op);
-                        }
-                        (
-                            Self {
-                                version,
-                                typ: PacketType::Operation(
-                                    Operation::from_type_id(type_id),
-                                    sub_packets,
-                                ),
-                            },
-                            size + 7 + 11,
-                        )
-                    }
-                    _ => {
-                        unreachable!();
-                    }
+                let mut sub_packets = vec![];
+                let mut size = 0;
+                for _ in 0..num_sub_packets {
+                    let (op, add_size) = Self::parse_packet(&packet[7 + 11 + size..]);
+                    size += add_size;
+                    sub_packets.push(op);
                 }
+                (
+                    Self {
+                        version,
+                        typ: PacketType::Operation(Operation::from_type_id(type_id), sub_packets),
+                    },
+                    size + 7 + 11,
+                )
             }
         }
     }
