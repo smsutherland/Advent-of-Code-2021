@@ -164,11 +164,13 @@ impl RiskCalculator {
         self.cache.insert(start, result.min(prev_val));
 
         if prev_val > result {
-            for v in &valid_adj {
-                if prev_val == u64::MAX{
+            if prev_val == u64::MAX{
+                for v in &valid_adj{
                     self.queue.push_front(*v);
                 }
-                else{
+            }
+            else{
+                for v in &valid_adj{
                     self.queue.push_back(*v);
                 }
             }
