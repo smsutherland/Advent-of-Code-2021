@@ -9,9 +9,9 @@ pub fn run(lines: &[String]) -> (u64, u64) {
         .chars()
         .map(|c| if c == '#' { true } else { false })
         .collect();
-    let mut inverse_rule = rule.clone();
-    for i in 0..rule.len(){
-        inverse_rule[i] = !rule[!i & 0b111111111];
+    let mut inverse_rule = Vec::with_capacity(rule.len());
+    for i in 0..rule.len() {
+        inverse_rule.push(!rule[!i & 0b111111111]);
     }
 
     let mut image = Image::new();
@@ -28,9 +28,9 @@ pub fn run(lines: &[String]) -> (u64, u64) {
     image = process_image(image, &inverse_rule);
     let part_1 = image.len() as u64;
 
-    for _ in 0..24{
+    for _ in 0..24 {
         image = process_image(image, &rule);
-        image = process_image(image, &inverse_rule);    
+        image = process_image(image, &inverse_rule);
     }
     let part_2 = image.len() as u64;
 
