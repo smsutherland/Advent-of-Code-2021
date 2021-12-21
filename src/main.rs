@@ -66,6 +66,7 @@ fn main() {
         16 => day_16::run(&lines),
         17 => day_17::run(&lines),
         18 => day_18::run(&lines),
+        19 => day_19::run(&lines),
         20 => day_20::run(&lines),
         _ => (0, 0),
     };
