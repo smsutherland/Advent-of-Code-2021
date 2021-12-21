@@ -2,7 +2,6 @@ use std::cmp::{Eq, PartialEq};
 use std::fmt::{self, Debug, Display};
 use std::ops::Add;
 use std::str::FromStr;
-// use std::io::repeat;
 
 #[derive(PartialEq, Eq, Clone)]
 struct SnailfishNumber {
