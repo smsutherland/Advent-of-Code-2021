@@ -17,21 +17,10 @@ where
 pub fn download_input(day_num: u8) -> Result<(), Box<dyn Error>> {
     let aoc_session = dotenv::var("AOC_SESSION").unwrap();
 
-    let mut header = reqwest::header::HeaderMap::new();
-    header.insert(
-        "cookie",
-        reqwest::header::HeaderValue::from_str(format!("session={}", aoc_session).as_str())?,
-    );
-    let client = reqwest::blocking::Client::builder()
-        .default_headers(header)
-        .build()?;
-    let input = client
-        .get(format!(
-            "https://adventofcode.com/2021/day/{}/input",
-            day_num
-        ))
-        .send()?
-        .text()?;
+    let input = ureq::get(format!("https://adventofcode.com/2021/day/{}/input", day_num).as_str())
+        .set("cookie", format!("session={}", aoc_session).as_str())
+        .call()?
+        .into_string()?;
 
     if input.starts_with("Please don't repeatedly request this endpoint before it unlocks!") {
         println!("Input for day {} not ready.", day_num);
