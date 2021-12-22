@@ -81,7 +81,7 @@ impl Add for Point {
 #[derive(Clone, Debug)]
 struct Scanner {
     beacon_positions: Vec<Point>,
-    relative_positions: Vec<Vec<Point>>,
+    beacon_relative_positions: Vec<Vec<Point>>,
     scanner_positions: Vec<Point>,
     scanner_relative_positions: Vec<Vec<Point>>,
 }
@@ -90,7 +90,7 @@ impl Scanner {
     fn new() -> Self {
         let mut result = Scanner {
             beacon_positions: Vec::new(),
-            relative_positions: Vec::new(),
+            beacon_relative_positions: Vec::new(),
             scanner_positions: Vec::new(),
             scanner_relative_positions: Vec::new(),
         };
@@ -102,10 +102,10 @@ impl Scanner {
         let mut relative_positions = Vec::with_capacity(self.beacon_positions.len());
         for (i, b) in self.beacon_positions.iter().enumerate() {
             relative_positions.push(*b - p);
-            self.relative_positions[i].push(p - *b);
+            self.beacon_relative_positions[i].push(p - *b);
         }
         self.beacon_positions.push(p);
-        self.relative_positions.push(relative_positions);
+        self.beacon_relative_positions.push(relative_positions);
     }
 
     fn add_scanner(&mut self, p: Point) {
@@ -121,8 +121,8 @@ impl Scanner {
     // Tries to align scanner_2 with scanner_1
     // If they align, returns Some((Point, Rotation)) containing the position and rotation of scanner_2 relative to scanner_1
     fn align(scanner_1: &Self, scanner_2: &Self) -> Option<(Point, Rotation)> {
-        for (i, p1) in scanner_1.relative_positions.iter().enumerate() {
-            for (j, p2) in scanner_2.relative_positions.iter().enumerate() {
+        for (i, p1) in scanner_1.beacon_relative_positions.iter().enumerate() {
+            for (j, p2) in scanner_2.beacon_relative_positions.iter().enumerate() {
                 for r in ALL_ROTATIONS {
                     let p2 = p2.iter().map(|p| r * *p).collect();
                     if Self::check_alignment(p1, &p2) {
