@@ -54,7 +54,7 @@ impl Display for BasinMap {
                     f,
                     "{}",
                     format!("{}", val.0)
-                        .color(*color_map.entry(val.1).or_insert(generate_random_color()))
+                        .color(*color_map.entry(val.1).or_insert_with(generate_random_color))
                 )?;
             }
             writeln!(f)?;

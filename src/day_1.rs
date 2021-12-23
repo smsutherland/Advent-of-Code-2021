@@ -6,7 +6,7 @@ pub fn run(lines: &[String]) -> (u64, u64) {
         .clone()
         .zip(depths.clone().skip(1))
         .map(|x| x.0 < x.1)
-        .filter(|x| *x == true)
+        .filter(|x| *x)
         .count() as u64;
 
     let sums_of_3 = izip!(
@@ -19,7 +19,7 @@ pub fn run(lines: &[String]) -> (u64, u64) {
         .clone()
         .zip(sums_of_3.clone().skip(1))
         .map(|x| x.0 < x.1)
-        .filter(|x| *x == true)
+        .filter(|x| *x)
         .count() as u64;
 
     (part_1, part_2)

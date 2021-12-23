@@ -51,12 +51,12 @@ pub fn run(lines: &[String]) -> (u64, u64) {
     (part_1, part_2)
 }
 
-fn big(cave_name: &String) -> bool {
+fn big(cave_name: &str) -> bool {
     *cave_name == cave_name.to_ascii_uppercase()
 }
 
 fn num_paths_1(
-    cave_paths: &Vec<(usize, usize)>,
+    cave_paths: &[(usize, usize)],
     mut visited: Vec<usize>,
     start: usize,
     end: usize,
@@ -68,16 +68,16 @@ fn num_paths_1(
     if !bigs.contains(&start) {
         visited.push(start);
     }
-    let adj = get_adj(&cave_paths, start).filter(|x| !visited.contains(x));
+    let adj = get_adj(cave_paths, start).filter(|x| !visited.contains(x));
     let mut paths = 0;
     for next in adj {
-        paths += num_paths_1(&cave_paths, visited.clone(), next, end, &bigs);
+        paths += num_paths_1(cave_paths, visited.clone(), next, end, bigs);
     }
     paths
 }
 
 fn num_paths_2(
-    cave_paths: &Vec<(usize, usize)>,
+    cave_paths: &[(usize, usize)],
     mut visited: Vec<usize>,
     start: usize,
     end: usize,
@@ -91,16 +91,16 @@ fn num_paths_2(
     if !bigs.contains(&start) {
         visited.push(start);
     }
-    let adj = get_adj(&cave_paths, start)
+    let adj = get_adj(cave_paths, start)
         .filter(|x| (!visited_small || !visited.contains(x)) && *x != absolute_start);
     let mut paths = 0;
     for next in adj {
         paths += num_paths_2(
-            &cave_paths,
+            cave_paths,
             visited.clone(),
             next,
             end,
-            &bigs,
+            bigs,
             visited_small || visited.contains(&next),
             absolute_start,
         );
@@ -108,10 +108,7 @@ fn num_paths_2(
     paths
 }
 
-fn get_adj<'a>(
-    cave_paths: &'a Vec<(usize, usize)>,
-    cave_index: usize,
-) -> impl Iterator<Item = usize> + 'a {
+fn get_adj(cave_paths: &[(usize, usize)], cave_index: usize) -> impl Iterator<Item = usize> + '_ {
     cave_paths
         .iter()
         .filter(move |x| x.0 == cave_index || x.1 == cave_index)

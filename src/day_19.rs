@@ -124,7 +124,7 @@ impl Scanner {
         for (i, p1) in scanner_1.beacon_relative_positions.iter().enumerate() {
             for (j, p2) in scanner_2.beacon_relative_positions.iter().enumerate() {
                 for r in ALL_ROTATIONS {
-                    let p2 = p2.iter().map(|p| r * *p).collect();
+                    let p2: Vec<Point> = p2.iter().map(|p| r * *p).collect();
                     if Self::check_alignment(p1, &p2) {
                         let p1 = scanner_1.beacon_positions[i];
                         let p2 = r * scanner_2.beacon_positions[j];
@@ -137,10 +137,7 @@ impl Scanner {
         None
     }
 
-    fn check_alignment(
-        relative_positions_1: &Vec<Point>,
-        relative_positions_2: &Vec<Point>,
-    ) -> bool {
+    fn check_alignment(relative_positions_1: &[Point], relative_positions_2: &[Point]) -> bool {
         // let matches: Vec<&Point> = relative_positions_1.iter().filter(|x| relative_positions_2.contains(x)).collect();
         // matches.len() >= 12
         relative_positions_1
@@ -172,13 +169,13 @@ pub fn run(lines: &[String]) -> (u64, u64) {
         if line.starts_with("---") {
             continue;
         }
-        if line == "" {
+        if line.is_empty() {
             scanners.push(current_scanner);
             current_scanner = Scanner::new();
             continue;
         }
 
-        let mut point_coords = line.split(",");
+        let mut point_coords = line.split(',');
         let point = Point(
             point_coords.next().unwrap().parse().unwrap(),
             point_coords.next().unwrap().parse().unwrap(),

@@ -24,7 +24,7 @@ impl Cubiod {
     }
 
     fn from_str(line: &str) -> Cubiod {
-        let mut dimensions = line.split(",");
+        let mut dimensions = line.split(',');
         let x = common::deformat_str("{}={}..{}", dimensions.next().unwrap()).unwrap();
         let y = common::deformat_str("{}={}..{}", dimensions.next().unwrap()).unwrap();
         let z = common::deformat_str("{}={}..{}", dimensions.next().unwrap()).unwrap();
@@ -55,64 +55,62 @@ impl Cubiod {
             return vec![self.clone()];
         }
 
-        let mut result = Vec::new();
-
-        // right
-        result.push(Cubiod::from_bounds(
-            *intersection.0.end() + 1,
-            *self.0.end(),
-            *self.1.start(),
-            *self.1.end(),
-            *self.2.start(),
-            *self.2.end(),
-        ));
-        // left
-        result.push(Cubiod::from_bounds(
-            *self.0.start(),
-            *intersection.0.start() - 1,
-            *self.1.start(),
-            *self.1.end(),
-            *self.2.start(),
-            *self.2.end(),
-        ));
-
-        // top
-        result.push(Cubiod::from_bounds(
-            *intersection.0.start(),
-            *intersection.0.end(),
-            *intersection.1.end() + 1,
-            *self.1.end(),
-            *self.2.start(),
-            *self.2.end(),
-        ));
-        // bottom
-        result.push(Cubiod::from_bounds(
-            *intersection.0.start(),
-            *intersection.0.end(),
-            *self.1.start(),
-            *intersection.1.start() - 1,
-            *self.2.start(),
-            *self.2.end(),
-        ));
-
-        // front
-        result.push(Cubiod::from_bounds(
-            *intersection.0.start(),
-            *intersection.0.end(),
-            *intersection.1.start(),
-            *intersection.1.end(),
-            *intersection.2.end() + 1,
-            *self.2.end(),
-        ));
-        // back
-        result.push(Cubiod::from_bounds(
-            *intersection.0.start(),
-            *intersection.0.end(),
-            *intersection.1.start(),
-            *intersection.1.end(),
-            *self.2.start(),
-            *intersection.2.start() - 1,
-        ));
+        let mut result = vec![
+            // right
+            Cubiod::from_bounds(
+                *intersection.0.end() + 1,
+                *self.0.end(),
+                *self.1.start(),
+                *self.1.end(),
+                *self.2.start(),
+                *self.2.end(),
+            ),
+            // left
+            Cubiod::from_bounds(
+                *self.0.start(),
+                *intersection.0.start() - 1,
+                *self.1.start(),
+                *self.1.end(),
+                *self.2.start(),
+                *self.2.end(),
+            ),
+            // top
+            Cubiod::from_bounds(
+                *intersection.0.start(),
+                *intersection.0.end(),
+                *intersection.1.end() + 1,
+                *self.1.end(),
+                *self.2.start(),
+                *self.2.end(),
+            ),
+            // bottom
+            Cubiod::from_bounds(
+                *intersection.0.start(),
+                *intersection.0.end(),
+                *self.1.start(),
+                *intersection.1.start() - 1,
+                *self.2.start(),
+                *self.2.end(),
+            ),
+            // front
+            Cubiod::from_bounds(
+                *intersection.0.start(),
+                *intersection.0.end(),
+                *intersection.1.start(),
+                *intersection.1.end(),
+                *intersection.2.end() + 1,
+                *self.2.end(),
+            ),
+            // back
+            Cubiod::from_bounds(
+                *intersection.0.start(),
+                *intersection.0.end(),
+                *intersection.1.start(),
+                *intersection.1.end(),
+                *self.2.start(),
+                *intersection.2.start() - 1,
+            ),
+        ];
 
         result = result.into_iter().filter(|x| !x.is_empty()).collect();
         result
@@ -196,78 +194,78 @@ impl CubiodSet {
                     }
 
                     // check x direction
-                    if component_1.1 == component_2.1 && component_1.2 == component_2.2 {
-                        if component_1.0.end() + 1 == *component_2.0.start()
-                            || *component_1.0.start() == component_2.0.end() + 1
-                        {
-                            let new_component = Cubiod::from_bounds(
-                                *component_1.0.start().min(component_2.0.start()),
-                                *component_1.0.end().max(component_2.0.end()),
-                                *component_1.1.start(),
-                                *component_1.1.end(),
-                                *component_1.2.start(),
-                                *component_1.2.end(),
-                            );
-                            if i > j {
-                                self.components.swap_remove(i);
-                                self.components.swap_remove(j);
-                            } else {
-                                self.components.swap_remove(j);
-                                self.components.swap_remove(i);
-                            };
-                            self.components.push(new_component);
-                            continue 'main_loop;
-                        }
+                    if component_1.1 == component_2.1
+                        && component_1.2 == component_2.2
+                        && (component_1.0.end() + 1 == *component_2.0.start()
+                            || *component_1.0.start() == component_2.0.end() + 1)
+                    {
+                        let new_component = Cubiod::from_bounds(
+                            *component_1.0.start().min(component_2.0.start()),
+                            *component_1.0.end().max(component_2.0.end()),
+                            *component_1.1.start(),
+                            *component_1.1.end(),
+                            *component_1.2.start(),
+                            *component_1.2.end(),
+                        );
+                        if i > j {
+                            self.components.swap_remove(i);
+                            self.components.swap_remove(j);
+                        } else {
+                            self.components.swap_remove(j);
+                            self.components.swap_remove(i);
+                        };
+                        self.components.push(new_component);
+                        continue 'main_loop;
                     }
 
                     // check y direction
-                    if component_1.0 == component_2.0 && component_1.2 == component_2.2 {
-                        if component_1.1.end() + 1 == *component_2.1.start()
-                            || *component_1.1.start() == component_2.1.end() + 1
-                        {
-                            let new_component = Cubiod::from_bounds(
-                                *component_1.0.start(),
-                                *component_1.0.end(),
-                                *component_1.1.start().min(component_2.1.start()),
-                                *component_1.1.end().max(component_2.1.end()),
-                                *component_1.2.start(),
-                                *component_1.2.end(),
-                            );
-                            if i > j {
-                                self.components.swap_remove(i);
-                                self.components.swap_remove(j);
-                            } else {
-                                self.components.swap_remove(j);
-                                self.components.swap_remove(i);
-                            };
-                            self.components.push(new_component);
-                            continue 'main_loop;
-                        }
+                    if component_1.0 == component_2.0
+                        && component_1.2 == component_2.2
+                        && (component_1.1.end() + 1 == *component_2.1.start()
+                            || *component_1.1.start() == component_2.1.end() + 1)
+                    {
+                        let new_component = Cubiod::from_bounds(
+                            *component_1.0.start(),
+                            *component_1.0.end(),
+                            *component_1.1.start().min(component_2.1.start()),
+                            *component_1.1.end().max(component_2.1.end()),
+                            *component_1.2.start(),
+                            *component_1.2.end(),
+                        );
+                        if i > j {
+                            self.components.swap_remove(i);
+                            self.components.swap_remove(j);
+                        } else {
+                            self.components.swap_remove(j);
+                            self.components.swap_remove(i);
+                        };
+                        self.components.push(new_component);
+                        continue 'main_loop;
                     }
 
                     // check z direction
-                    if component_1.0 == component_2.0 && component_1.1 == component_2.1 {
-                        if component_1.2.end() + 1 == *component_2.2.start()
-                            || *component_1.2.start() == component_2.2.end() + 1
-                        {
-                            let new_component = Cubiod::from_bounds(
-                                *component_1.0.start(),
-                                *component_1.0.end(),
-                                *component_1.1.start(),
-                                *component_1.1.end(),
-                                *component_1.2.start().min(component_2.2.start()),
-                                *component_1.2.end().max(component_2.2.end()),
-                            );
-                            if i > j {
-                                self.components.swap_remove(i);
-                                self.components.swap_remove(j);
-                            } else {
-                                self.components.swap_remove(j);
-                                self.components.swap_remove(i);
-                            };
-                            self.components.push(new_component);
-                            continue 'main_loop;
-                        }
+                    if component_1.0 == component_2.0
+                        && component_1.1 == component_2.1
+                        && (component_1.2.end() + 1 == *component_2.2.start()
+                            || *component_1.2.start() == component_2.2.end() + 1)
+                    {
+                        let new_component = Cubiod::from_bounds(
+                            *component_1.0.start(),
+                            *component_1.0.end(),
+                            *component_1.1.start(),
+                            *component_1.1.end(),
+                            *component_1.2.start().min(component_2.2.start()),
+                            *component_1.2.end().max(component_2.2.end()),
+                        );
+                        if i > j {
+                            self.components.swap_remove(i);
+                            self.components.swap_remove(j);
+                        } else {
+                            self.components.swap_remove(j);
+                            self.components.swap_remove(i);
+                        };
+                        self.components.push(new_component);
+                        continue 'main_loop;
                     }
                 }
             }

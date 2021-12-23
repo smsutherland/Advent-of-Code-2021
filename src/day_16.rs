@@ -152,7 +152,7 @@ impl Operation {
 pub fn run(lines: &[String]) -> (u64, u64) {
     let mut bits = String::new();
     for c in lines[0].chars() {
-        bits.push_str(&format!("{:04b}", c.to_digit(16).unwrap()).as_str());
+        bits.push_str(format!("{:04b}", c.to_digit(16).unwrap()).as_str());
     }
 
     let packet = Packet::parse_packet(&bits).0;

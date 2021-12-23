@@ -25,15 +25,14 @@ pub fn run(lines: &[String]) -> (u64, u64) {
     let mut part_2 = 0;
     for line in lines {
         let mut parts = line.split(" | ");
-        let input: Vec<&str> = parts.next().unwrap().split(" ").collect();
-        let output = parts.next().unwrap().split(" ");
+        let input: Vec<&str> = parts.next().unwrap().split(' ').collect();
+        let output = parts.next().unwrap().split(' ');
 
-        part_1 = part_1
-            + output
-                .clone()
-                .map(|x| x.len() as i64)
-                .filter(|x| matches!(x, 2 | 3 | 4 | 7))
-                .count() as u64;
+        part_1 += output
+            .clone()
+            .map(|x| x.len() as i64)
+            .filter(|x| matches!(x, 2 | 3 | 4 | 7))
+            .count() as u64;
 
         let unknown_digits: Vec<HashSet<char>> =
             input.iter().map(|x| x.chars().collect()).collect();
@@ -145,14 +144,14 @@ pub fn run(lines: &[String]) -> (u64, u64) {
     (part_1, part_2)
 }
 
-fn find_one_more(unknown_digits: &Vec<HashSet<char>>, all_but_one: HashSet<char>) -> (char, usize) {
+fn find_one_more(unknown_digits: &[HashSet<char>], all_but_one: HashSet<char>) -> (char, usize) {
     for (i, digit) in unknown_digits.iter().enumerate() {
-        if !all_but_one.is_subset(&digit) {
+        if !all_but_one.is_subset(digit) {
             continue;
         }
         let mut diff = digit.difference(&all_but_one);
         if let Some(n) = diff.next() {
-            if let None = diff.next() {
+            if diff.next() == None {
                 return (*n, i);
             }
         }

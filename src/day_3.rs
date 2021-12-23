@@ -4,7 +4,6 @@ pub fn run(lines: &[String]) -> (u64, u64) {
     let num_length = lines[0].len();
 
     let nums: Vec<u64> = lines
-        .clone()
         .iter()
         .map(|x| u64::from_str_radix(x, 2).unwrap())
         .collect();
@@ -16,14 +15,14 @@ pub fn run(lines: &[String]) -> (u64, u64) {
         .map(|x| most_common_bit(&nums, x as u8))
     {
         assert!((0..=1).contains(&c));
-        gamma = gamma << 1;
-        epsilon = epsilon << 1;
-        gamma = gamma + c;
-        epsilon = epsilon + 1 - c;
+        gamma <<= 1;
+        epsilon <<= 1;
+        gamma += c;
+        epsilon += 1 - c;
     }
 
     let mut oxygen_ratings = nums.clone();
-    let mut carbon_ratings = nums.clone();
+    let mut carbon_ratings = nums;
 
     for i in (0..num_length).rev() {
         let co = most_common_bit(&oxygen_ratings, i as u8);

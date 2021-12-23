@@ -29,10 +29,7 @@ fn main() {
             break;
         }
     } else {
-        day_num = match args[1].parse() {
-            Ok(num) => num,
-            Err(_) => 0,
-        };
+        day_num = args[1].parse().unwrap_or(0);
     }
 
     let visualize =

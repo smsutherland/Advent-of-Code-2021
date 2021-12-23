@@ -31,7 +31,7 @@ impl Board {
     fn won(&self) -> bool {
         // check rows
         for row in &self.nums {
-            if Self::check_group(&row) {
+            if Self::check_group(row) {
                 return true;
             }
         }
@@ -74,7 +74,7 @@ impl Board {
         result
     }
 
-    fn check_group(vals: &Vec<Status>) -> bool {
+    fn check_group(vals: &[Status]) -> bool {
         for val in vals {
             if let Status::Unmarked(_) = val {
                 return false;
@@ -97,7 +97,7 @@ impl Board {
 }
 
 pub fn run(lines: &[String]) -> (u64, u64) {
-    let order: Vec<u64> = lines[0].split(",").map(|x| x.parse().unwrap()).collect();
+    let order: Vec<u64> = lines[0].split(',').map(|x| x.parse().unwrap()).collect();
 
     let mut lines = lines.iter().skip(1);
 
@@ -109,8 +109,8 @@ pub fn run(lines: &[String]) -> (u64, u64) {
                 lines
                     .next()
                     .unwrap()
-                    .split(" ")
-                    .filter(|x| x.len() > 0)
+                    .split(' ')
+                    .filter(|x| x.is_empty())
                     .map(|x| Status::Unmarked(x.parse().unwrap()))
                     .collect(),
             );
@@ -127,17 +127,16 @@ pub fn run(lines: &[String]) -> (u64, u64) {
     let mut num_winners = 0;
 
     'loop2: for num in order {
-        let mut i = 0;
-        for board in &mut boards {
+        for (i, board) in boards.iter_mut().enumerate() {
             if board.mark_num(num) {
                 if first_winner == None {
                     first_win_num = num;
                     first_winner = Some(i);
                 }
 
-                if winners[i] == false {
+                if !winners[i] {
                     winners[i] = true;
-                    num_winners = num_winners + 1;
+                    num_winners += 1;
                 }
 
                 if num_winners == winners.len() {
@@ -146,7 +145,6 @@ pub fn run(lines: &[String]) -> (u64, u64) {
                     break 'loop2;
                 }
             }
-            i = i + 1;
         }
     }
 

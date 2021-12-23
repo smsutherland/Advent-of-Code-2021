@@ -2,13 +2,13 @@ use crate::common;
 use std::collections::HashSet;
 
 pub fn run(lines: &[String]) -> (u64, u64) {
-    let mut parts = lines.split(|x| x == "");
+    let mut parts = lines.split(|x| x.is_empty());
     let points: HashSet<[u64; 2]> = parts
         .next()
         .unwrap()
         .iter()
         .map(|p| {
-            let v = p.split(",").map(|x| x.parse().unwrap()).collect::<Vec<_>>();
+            let v = p.split(',').map(|x| x.parse().unwrap()).collect::<Vec<_>>();
             [v[0], v[1]]
         })
         .collect();
@@ -54,8 +54,7 @@ fn reflect(point: [u64; 2], over: u64, axis: char) -> Option<[u64; 2]> {
         _ => unreachable!(),
     };
 
-    let mut new_point = point.clone();
-    // assert!(new_point[axis] < 2*over, "folding over too far");
+    let mut new_point = point;
     new_point[axis] = if new_point[axis] > over {
         if new_point[axis] > 2 * over {
             return None;

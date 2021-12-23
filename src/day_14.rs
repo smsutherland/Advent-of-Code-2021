@@ -18,9 +18,9 @@ pub fn run(lines: &[String]) -> (u64, u64) {
     (part_1, part_2)
 }
 
-fn do_it(polymer: &String, insertions: &HashMap<String, char>, i: u32) -> u64 {
+fn do_it(polymer: &str, insertions: &HashMap<String, char>, i: u32) -> u64 {
     let mut pair_counts = HashMap::new();
-    for pair in pairs(&polymer) {
+    for pair in pairs(polymer) {
         *pair_counts.entry(pair.to_owned()).or_insert(0) += 1;
     }
 
@@ -66,7 +66,7 @@ fn do_it(polymer: &String, insertions: &HashMap<String, char>, i: u32) -> u64 {
     char_counts.values().max().unwrap() - char_counts.values().min().unwrap()
 }
 
-fn pairs<'a>(line: &'a String) -> impl Iterator<Item = &'a str> {
+fn pairs(line: &str) -> impl Iterator<Item = &str> {
     (0..line.len() - 1).map(|i| &line[i..i + 2])
 }
 

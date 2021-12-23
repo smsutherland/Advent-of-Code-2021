@@ -153,7 +153,7 @@ impl RiskCalculator {
 
         let mut paths = vec![];
         for v in &valid_adj {
-            if let Some(val) = self.cache.get(&v) {
+            if let Some(val) = self.cache.get(v) {
                 paths.push(*val);
             }
         }

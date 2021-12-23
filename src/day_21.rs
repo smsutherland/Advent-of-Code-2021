@@ -69,7 +69,7 @@ pub fn run(lines: &[String]) -> (u64, u64) {
     let mut states = HashMap::new();
     states.insert((initial_player_1 as u8, initial_player_2 as u8, 0, 0), 1);
 
-    while states.len() > 0 {
+    while !states.is_empty() {
         let mut next_states = HashMap::new();
         for (state, frequency) in &states {
             for (roll1, roll1_frequency) in DIRAC_ROLLS.iter().enumerate() {

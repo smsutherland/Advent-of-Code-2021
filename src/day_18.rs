@@ -126,7 +126,7 @@ impl FromStr for SnailfishNumber {
 impl Add<&SnailfishNumber> for SnailfishNumber {
     type Output = SnailfishNumber;
     fn add(self, rhs: &Self) -> SnailfishNumber {
-        let mut numbers = self.numbers.clone();
+        let mut numbers = self.numbers;
         numbers.append(&mut rhs.numbers.clone());
         for num in &mut numbers {
             num.1 += 1;
@@ -139,8 +139,9 @@ impl Add<&SnailfishNumber> for SnailfishNumber {
 impl Add for SnailfishNumber {
     type Output = SnailfishNumber;
     fn add(self, rhs: Self) -> SnailfishNumber {
-        let mut numbers = self.numbers.clone();
-        numbers.append(&mut rhs.numbers.clone());
+        let mut numbers = self.numbers;
+        let mut numbers2 = rhs.numbers;
+        numbers.append(&mut numbers2);
         for num in &mut numbers {
             num.1 += 1;
         }

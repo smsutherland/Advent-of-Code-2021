@@ -5,10 +5,7 @@ type Image = HashSet<Pixel>;
 type Rule = Vec<bool>;
 
 pub fn run(lines: &[String]) -> (u64, u64) {
-    let rule: Rule = lines[0]
-        .chars()
-        .map(|c| if c == '#' { true } else { false })
-        .collect();
+    let rule: Rule = lines[0].chars().map(|c| c == '#').collect();
     let mut inverse_rule = Vec::with_capacity(rule.len());
     for i in 0..rule.len() {
         inverse_rule.push(!rule[!i & 0b111111111]);
@@ -37,7 +34,7 @@ pub fn run(lines: &[String]) -> (u64, u64) {
     (part_1, part_2)
 }
 
-fn process_image(image: Image, rule: &Rule) -> Image {
+fn process_image(image: Image, rule: &[bool]) -> Image {
     let mut result = Image::new();
     for pixel in &image {
         let adj = get_adj(*pixel);

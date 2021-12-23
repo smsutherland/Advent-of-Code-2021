@@ -77,7 +77,7 @@ pub fn run(lines: &[String]) -> (u64, u64) {
                     }
                     Some(lhs) => {
                         let inside_r = c.inside();
-                        if mem::discriminant(&lhs) != mem::discriminant(&inside_r) {
+                        if mem::discriminant(&lhs) != mem::discriminant(inside_r) {
                             part_1 += inside_r.score_1();
                             stack.push(lhs);
                             valid = false;
@@ -98,7 +98,7 @@ pub fn run(lines: &[String]) -> (u64, u64) {
     }
 
     let part_2_len = part_2_scores.len();
-    part_2_scores.sort();
+    part_2_scores.sort_unstable();
     let part_2 = part_2_scores[(part_2_len - 1) / 2];
 
     (part_1, part_2)

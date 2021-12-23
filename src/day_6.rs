@@ -1,5 +1,5 @@
 pub fn run(lines: &[String]) -> (u64, u64) {
-    let line: Vec<u64> = lines[0].split(",").map(|x| x.parse().unwrap()).collect();
+    let line: Vec<u64> = lines[0].split(',').map(|x| x.parse().unwrap()).collect();
     let mut fish: Vec<u64> = (0..=8)
         .map(|x| line.iter().filter(|y| **y == x).count() as u64)
         .collect();
