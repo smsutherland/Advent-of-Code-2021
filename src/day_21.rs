@@ -22,7 +22,7 @@ impl DeterministicDie {
     }
 }
 
-const DIRAC_ROLLS: [u8; 9] = [0, 0, 1, 3, 6, 7, 6, 3, 1];
+const DIRAC_ROLLS: [u8; 10] = [0, 0, 0, 1, 3, 6, 7, 6, 3, 1];
 
 pub fn run(lines: &[String]) -> (u64, u64) {
     let initial_player_1 = lines[0][28..].parse::<u64>().unwrap() - 1;
@@ -74,7 +74,7 @@ pub fn run(lines: &[String]) -> (u64, u64) {
         for (state, frequency) in &states {
             for (roll1, roll1_frequency) in DIRAC_ROLLS.iter().enumerate() {
                 let mut new_state = *state;
-                new_state.0 += roll1 as u8 + 1;
+                new_state.0 += roll1 as u8;
                 new_state.0 %= 10;
                 new_state.2 += new_state.0 + 1;
                 if new_state.2 >= 21 {
@@ -82,7 +82,7 @@ pub fn run(lines: &[String]) -> (u64, u64) {
                 } else {
                     for (roll2, roll2_frequency) in DIRAC_ROLLS.iter().enumerate() {
                         let mut new_state = new_state;
-                        new_state.1 += roll2 as u8 + 1;
+                        new_state.1 += roll2 as u8;
                         new_state.1 %= 10;
                         new_state.3 += new_state.1 + 1;
                         if new_state.3 >= 21 {
