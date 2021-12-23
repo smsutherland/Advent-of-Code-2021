@@ -161,11 +161,7 @@ impl CubiodSet {
         'main_loop: while let Some(new_cubiod) = added_cubiods.pop() {
             for component in &self.components {
                 let mut parts = new_cubiod.difference(component);
-                if parts.len() > 1 || parts.get(0) != Some(&new_cubiod) {
-                    // dbg!(parts.len());
-                    // dbg!(&parts[0]);
-                    // dbg!(new_cubiod);
-                    // dbg!(component);
+                if parts.get(0) != Some(&new_cubiod) {
                     added_cubiods.append(&mut parts);
                     continue 'main_loop;
                 }
@@ -183,7 +179,7 @@ impl CubiodSet {
         self.components = new_components;
     }
 
-    fn len(&self) -> u64 {
+    fn volume(&self) -> u64 {
         let mut total = 0;
         for component in &self.components {
             total += component.volume();
@@ -191,7 +187,7 @@ impl CubiodSet {
         total
     }
 
-    fn reduce(&mut self) {
+    fn defrag(&mut self) {
         'main_loop: loop {
             for (i, component_1) in self.components.iter().enumerate() {
                 for (j, component_2) in self.components.iter().enumerate() {
@@ -290,22 +286,20 @@ pub fn run(lines: &[String]) -> (u64, u64) {
         let on = bits[0] == "on";
         let cubiod = Cubiod::from_str(&bits[1]);
 
-        // let restricted_cubiod = restrict_cubiod(&cubiod);
         let restricted_cubiod = PART_1_BOUNDARY.intersect(&cubiod);
         let this_set = restricted_cubiod.make_set();
 
         if on {
             lit_1 = lit_1.union(&this_set).map(|x| x.to_owned()).collect();
             lit_2.union(cubiod);
-            lit_2.reduce();
+            lit_2.defrag();
         } else {
             lit_1 = lit_1.difference(&this_set).map(|x| x.to_owned()).collect();
             lit_2.difference(cubiod);
-            lit_2.reduce();
         }
     }
     let part_1 = lit_1.len() as u64;
-    let part_2 = lit_2.len();
+    let part_2 = lit_2.volume();
 
     (part_1, part_2)
 }
