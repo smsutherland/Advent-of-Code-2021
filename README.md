@@ -3,7 +3,7 @@ Advent of Code 2021 is here and so am I. I've decided to start a pattern of lear
 Note that this is written assuming you are familiar with what the problems are. You can find the 2021 problem set [here](https://adventofcode.com/2021/).
 
 ### Days
-[Day 0](#day-0) / [Day 1](#day-1) / [Day 1.1](#day-11) / [Day 2](#day-2) / [Day 3](#day-3) / [Day 4](#day-4) / [Day 5](#day-5) / [Day 6](#day-6) / [Day 7](#day-7) / [Day 8](#day-8) / [Day 9](#day-9) / [Day 10](#day-10) / [Day 11](#day-11-1) / [Day 12](#day-12) / [Day 13](#day-13) / [Day 14](#day-14) / [Day 15](#day-15) / [Day 16](#day-16) / [Day 17](#day-17) / [Day 18](#day-18) / [Day 19](#day-19)
+[Day 0](#day-0) / [Day 1](#day-1) / [Day 1.1](#day-11) / [Day 2](#day-2) / [Day 3](#day-3) / [Day 4](#day-4) / [Day 5](#day-5) / [Day 6](#day-6) / [Day 7](#day-7) / [Day 8](#day-8) / [Day 9](#day-9) / [Day 10](#day-10) / [Day 11](#day-11-1) / [Day 12](#day-12) / [Day 13](#day-13) / [Day 14](#day-14) / [Day 15](#day-15) / [Day 16](#day-16) / [Day 17](#day-17) / [Day 18](#day-18) / [Day 19](#day-19) / [Day 20](#day-20)
 
 ## Day 0
 Before going into this, I wanted to have at least some working knowledge of how to work in Rust. I was reading through the book, but to gain some more hands-on experience, I redid some of the AoC20 problems. While doing so, I made the infrastructure used to run the solutions. [main.rs](/src/main.rs) was made to select a day to run and pass the input to the relevant function as an array of strings. While doing problem 2 in AoC20, I was faced with string decomposition. I spent considerable time trying to generalize the solution to that problem and came up with [this](/src/common.rs#L18). It's far from a perfect solution. For example, I hoped to find a way to try to parse the strings into the given type, but I couldn't find a way to work that much type wizardry. For now it simply returns a list of strings and type conversions have to be done outside the function.
@@ -119,3 +119,14 @@ I think this problem is a great example of how I approach harder problems. I pre
 As of writing this (which is admittedly on the 22nd), day 19 has the lowest number of clears. Additionally, it was the only day so far which I did not complete on the day it was released. That's because it was hard. It required a lot of thinking and my ultimate solution has loops six layers deep. The second and third loops go through pairs of scanners. The fourth loop goes through all beacons in the first scanner and the fifth goes through the second scanner. The sixth goes through all 24 possible rotations. Then, with a given pair of scanners, pair of points, and rotation, it sees if the two align. It rotates all beacons in scanner 2 using the rotation matrix, then translates them so that the two selected beacons overlap. If at least 11 other beacons (12 including the beacons which are used for the alignment), then we say the two scanners align that way. Then, the second scanner gets merged into the first, and the new scanner replaces its two component scanners in the total pool of scanners. The process repeats itself (the first loop) until all scanners have been merged into a single mega-scanner.
 
 To accomplish this, each scanner no only stores the positions of its beacons, but also stores the positions of each beacon relative to each other beacon, making it $b^2$ in memory (where $b$ is the number of beacons). By updating the relative positions of each beacon every time a beacon gets added, we save having to compute them every time we try to align two beacons.
+
+## [Day 20](src/day_20.rs)
+I banged my head against this one for a while, but a little birdie point me at the fact that this is a cellular automata where 9 empty squares do not turn into an empty square. Once that became clear, my plan was to alternate between storing a positive and negative of the image. Going from a positive to a negative image is as easy as saving the inverse of what the rule says. Going from a negative to a positive on the other hand, not as simple. I needed to construct an inverse rule to apply to the negative image. That's where this little bit of nastiness comes from.
+```Rust
+for i in 0..rule.len() {
+    inverse_rule.push(!rule[!i & 0b111111111]);
+}
+```
+Basically, to find the inverse rule, I need to invert the bits of the index (because it's a negative image), then invert the rule at that location (because to cancel the negation that comes from switching from negative to positive). the `& 0b111111111` exists solely to only invert the first 9 bits.
+
+By switching back and forth between a positive and negative image, the background is always 0, so we never have to worry about handling it.
