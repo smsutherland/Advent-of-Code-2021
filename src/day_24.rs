@@ -114,12 +114,12 @@ fn _simulate_code_dbg(input: &str) -> i64 {
 
 fn _format_base_26(mut num: u64) -> String {
     const CHAR_MAP: [char; 26] = [
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-        'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+        'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
     ];
     let mut result = String::new();
     if num == 0 {
-        result.push('0');
+        result.push('A');
     }
     while num > 0 {
         let digit = (num % 26) as usize;
