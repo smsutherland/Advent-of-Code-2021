@@ -345,7 +345,6 @@ pub fn run(lines: &[String]) -> (u64, u64) {
 
     let starting_state_1 = State::from_front_back_1(front, back);
     let part_1 = starting_state_1.energy_needed(2);
-    // let part_2 = 0;
 
     let starting_state_2 = State::from_front_back_2(front, back);
     let part_2 = starting_state_2.energy_needed(4);
